@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require ('mongoose');
 const { url } = require ('./config/database');
+const cors = require('cors');
 const app = express();
 const  UserController = require('./routes/user');
 
@@ -19,6 +20,8 @@ mongoose.connect(url, {
 })
 .then(()=> console.log('Mongo connectedd success'))
 .catch(err=> console.log(err))
+
+app.use(cors());
 
 app.use(express.json()); //парс всех реквестов, спарсеный  джейсон добавляется в req.body
 // Routes
