@@ -6,7 +6,7 @@ const auth = require('../external-services/firebase/auth');
     // Bearer token
     const [,token] = authorization.split(' '); //['bearer','token']
     const decodedToken = await auth.verifyToken(token);
-    console.log(decodedToken);
+    //console.log(decodedToken);
     req.locals = { email: decodedToken.email };
     return next();
   } catch (err) {
