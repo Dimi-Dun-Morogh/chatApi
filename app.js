@@ -3,18 +3,25 @@ const mongoose = require ('mongoose');
 const { url } = require ('./config/database');
 const cors = require('cors');
 const app = express();
+const http = require('http');
+const io = require('socket.io')(http);
 
 // Routes
 const  UserController = require('./routes/user');
 const ChatsController = require('./routes/chats');
+const MessagesController = require( './routes/messages');
 
 
 // Services
 const chatService = require ('./services/chats');
+const SocketListeners = require('./sockets/listeners');
+const SocketEmiters = require ('./sockets/emiters');
+
 
 const ROUTES = {
   users: "/api/users",
   chats: "/api/chats",
+  messages: "/api/messages"
 }
 
 const PORT = 3000;
@@ -49,6 +56,32 @@ app.use(express.json()); //парс всех реквестов, спарсен�
 // Routes use
 app.use(ROUTES.chats, ChatsController);
 app.use(ROUTES.users, UserController);
+app.use(ROUTES.messages, MessagesController)
+
+
+io.on('connection',(socket)=>{
+  // join chat
+  socket.on(SocketListeners.JOIN_CHAT,()=>{
+    console.log(SocketListeners.JOIN_CHAT)
+    // emit
+  })
+  // select chat
+  socket.on(SocketListeners.SELECT_CHAT,()=>{
+    console.log(SocketListeners.SELECT_CHAT)
+  });
+  // user typing
+  socket.on(SocketListeners.USER_TYPING,()=>{
+    console.log(SocketListeners.USER_TYPING)
+    // emit
+  })
+
+  // new message
+  socket.on(SocketListeners.NEW_MESSAGE,()=>{
+    console.log(SocketListeners.NEW_MESSAGE)
+    //emit
+  })
+})
+
 
 
 app.listen(PORT, () => {

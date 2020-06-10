@@ -44,10 +44,28 @@ async function updateUserData(data) {
   }
 }
 
+async function userJoinChat(chatId,userId) {
+  try {
+    /**
+     * 1й аргумент - параметр по которому ищем нашего юзера, chats:$nin chatId - проверка что в массиве чатс нет такого айди
+     * 2й аргумент - пушим в поле чат новый айди
+     */
+   await User.updateOne({
+      _id:  userId,
+      chats: { $nin: chatId}
+    },{
+      $push:{ chats: chatId}
+    })
+    return true;
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}
 
 module.exports = {
   createUser,
   getUser,
   getUserByEmail,
-  updateUserData
+  updateUserData,
+  userJoinChat
 }

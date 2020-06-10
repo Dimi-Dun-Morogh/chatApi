@@ -3,10 +3,12 @@ const router = express.Router();
 const authMiddleware = require("../middleware/authMiddleware");
 const chatsService = require("../services/chats");
 
-router.get("/", authMiddleware, async (req, res) => {
-  res.status(200).send(`email: ${req.locals.email}`);
-});
 
+/**
+ * @route /api/chats/public
+ * @description ...
+ * @private
+ */
 
 router.get("/public", authMiddleware, async(req,res)=>{
   try {
@@ -17,6 +19,12 @@ router.get("/public", authMiddleware, async(req,res)=>{
   }
 })
 
+
+/**
+ * @route /api/chats/:id
+ * @description ...
+ * @private
+ */
 router.get('/:id',authMiddleware, async(req,res)=>{
   try {
     const {id} = req.params;
